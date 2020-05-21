@@ -1,0 +1,195 @@
+
+<!-- saved from url=(0064)http://www.seattlecentral.edu/faculty/dfaust/Sp15CSC142/hw5.html -->
+<html><!--This file created 9:35 PM  5/15/02 by Claris Home Page version 3.0--><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <title>Computer homework</title>
+   <meta name="GENERATOR" content="Claris Home Page 3.0">
+   </head><body bgcolor="#FFFFFF"><x-claris-window top="0" bottom="439" left="0" right="788">
+   <x-claris-tagview mode="minimal">
+
+
+<center><font size="+2"><b>Homework 5</b></font>&nbsp;
+
+  <p><font size="+2"><b>(15 points + 5 points extra credit)</b></font></p></center><p>For this homework, you can work in a team of 2 members. Each team should turn in one program. You may also elect to work on your own.</p>
+  <p>In this assignment, you will practice doing the following:</p>
+  <ul>
+<li>designing classes (using an interface),</li><li>using 2D arrays </li></ul><p><font color="#000000"><i>Digital image processing has completely revolutionized 
+  the way images are created and used in news photography, publishing, commercial 
+  art, marketing, and even in some of the fine arts. Adobe�s Photoshop program 
+  has become so ubiquitous that it has even become a verb - �this picture is a 
+  mess, I need to Photoshop it�. In this assignment, you�ll implement some of 
+  the core image transformation algorithms used by image processing programs like 
+  Photoshop.</i></font></p><blockquote><blockquote><blockquote><blockquote><blockquote>&nbsp;</blockquote></blockquote></blockquote></blockquote></blockquote><h3><font color="#000000">Image Representation</font></h3><p><font color="#000000">A digital image is a rectangular array of pixel objects. 
+  Each pixel contains three integer values that range from 0 to 255, one integer 
+  each for the red, green, and blue components of the pixel, in that order. The 
+  larger a number, the brighter that color appears in the pixel. So a pixel with 
+  values (0,0,0) is black, (255,255,255) is white, (255,0,0) is pure red, (0,0,255) 
+  is pure blue, and so forth.</font></p><p><font color="#000000">We can represent a Pixel as a simple Java object containing 
+  three int instance variables and, for convenience, a constructor to create a 
+  new pixel given its rgb component values. As we did with the rainfall example 
+  in lecture, we'll treat these as simple data objects and allow direct references 
+  to their fields.</font></p><p><font face="Courier New" color="#000000" size="2">/** Representation of one pixel 
+  */<br>
+  public class Pixel {<br>
+  &nbsp;&nbsp;&nbsp; public int red; // rgb values in the range 0 to 255<br>
+  &nbsp;&nbsp;&nbsp; public int green;<br>
+  &nbsp;&nbsp;&nbsp; public int blue;<br>
+  <br>
+  &nbsp;&nbsp;&nbsp; /** Construct a new pixel with specified rgb values */<br>
+  &nbsp;&nbsp;&nbsp; public Pixel(int r, int g, int b) {<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.red = r;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.green = g;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this.blue = b;<br>
+  &nbsp;&nbsp;&nbsp; }<br>
+  }</font>
+<br>
+<br>
+An image is represented by an instance of class PixelImage. This class contains 
+the methods <tt><font color="#000000">getData()</font></tt> and <tt><font color="#000000">setData()</font></tt> 
+to retrieve 2-dimensional arrays of Pixel objects representing the pixels of the 
+image. You can also use the methods <tt><font color="#000000">getHeight()</font></tt> 
+and <tt><font color="#000000">getWidth()</font></tt> to get the height and width 
+of the image. 
+</p><h3><font color="#000000">The Application</font></h3><p><font color="#000000">We have implemented a PhotoShop-like Java application, 
+  called SnapShop. The application knows how to load image files, and provides 
+  all the user interface objects you'll need to apply your filters to the image. 
+  You will need not implement anything in the SnapShop class, but create a few 
+  new classes. The file loader of the SnapShop class expects filenames to be fully 
+  specified, that is, you must say something like <tt>c:\directory\image.jpg</tt>.&nbsp; 
+  Normal (forward) slashes also work: <font face="Courier New" size="2">c:/directory/image.jpg</font>. To save you some work, we've provided a 
+  shortcut so you don't need to always retype the file name; details below. To 
+  run the application, either create a new SnapShop object, or right click on 
+  the SnapShop class and run the <tt>test()</tt> method.</font></p><p><font color="#000000">We have also provided an interface class Filter. Remember 
+  that an interface simply specifies the methods another class must implement, 
+  and cannot be used to make objects itself. You will be writing classes that 
+  implement this Filter interface, one for each transformation you write. Each 
+  class implementing the Filter interface must have a method called <tt>filter()</tt>, 
+  which takes a PixelImage as an argument. The method then applies a transformation 
+  to the data in the image. As an example, we have included the FlipHorizontalFilter 
+  class, which flips an image horizontally.</font></p><p><font color="#000000">You will need some way to tell our SnapShop class which 
+  filters you have implemented. So we've provided a class called SnapShopConfiguration, 
+  with a single method, <tt>configure()</tt>. In this method, you can call methods 
+  for the SnapShop object. The two methods you'll be interested in are <tt>addFilter()</tt>, 
+  which creates a button in the application to apply your filter, and <tt>setDefaultFilename()</tt>, 
+  which lets you specify a default path or filename for the file loader, to aid 
+  you in testing.&nbsp; For each filter that you create, there should be a call 
+  to <font face="Courier New" size="2">addFilter()</font> in the <font face="Courier New" size="2">configure()</font> method.</font></p><p><font color="#000000">(A note on <tt>setDefaultFilename()</tt>. Windows path 
+  names have backslashes (\) in them. To specify this in a string in a Java source 
+  program, you need to put two backslashes. For example, the Java string for <tt>c:\directory\image.jpg</tt> 
+  would be <tt>"c:\\directory\\image.jpg"</tt>.)<br>
+  <br>
+  Here are the files you need to download to get started: <a href="http://www.seattlecentral.edu/faculty/dfaust/Sp15CSC142/hw5/SnapShop.java">SnapShop.java</a>, <a href="http://www.seattlecentral.edu/faculty/dfaust/Sp15CSC142/hw5/SnapShopConfiguration.java">SnapShopConfiguration.java</a>, <a href="http://www.seattlecentral.edu/faculty/dfaust/Sp15CSC142/hw5/Pixel.java">Pixel.java</a>, <a href="http://www.seattlecentral.edu/faculty/dfaust/Sp15CSC142/hw5/PixelImage.java">PixelImage.java</a>, <a href="http://www.seattlecentral.edu/faculty/dfaust/Sp15CSC142/hw5/Filter.java">Filter.java</a>, <a href="http://www.seattlecentral.edu/faculty/dfaust/Sp15CSC142/hw5/FlipHorizontalFilter.java">FlipHorizontalFilter.java</a>.&nbsp; Here 
+  are a couple of images you can use to test your code: <a href="http://www.seattlecentral.edu/faculty/dfaust/Sp15CSC142/hw5/billg.jpg">billg.jpg</a>, <a href="http://www.seattlecentral.edu/faculty/dfaust/Sp15CSC142/hw5/seattle.jpg">seattle.jpg</a> .&nbsp; If you use other images as test 
+  images, be sure that they aren't much bigger than seattle.jpg.&nbsp; Your program 
+  will take a long time to process a large image.</font></p><h3><font color="#000000">Simple Transformations</font></h3><p><font color="#000000">There are two kinds of transformations that you are required 
+  to implement. The simple transformations can be implemented by replacing each 
+  Pixel in the existing image with the updated one. The more complex 3x3 transformations 
+  require creating a new array of Pixels with the transformed image, then updating 
+  the image instance variable to refer to the new array once it is completely 
+  initialized.</font></p><p><font color="#000000">The first three transformations you should implement 
+  flip the image horizontally and vertically, and transform the image into a photographic 
+  negative of itself (that is, you should create a flipHorizontalFilter, flipVerticalFilter, 
+  and NegativeFilter class).&nbsp; We have implemented flipHorizontalFilter for 
+  you.</font></p><p><font color="#000000">The first two require a simple rearrangement of the pixels 
+  that reverses the order of rows or columns in the image. The negate transformation 
+  is done by replacing each Pixel in the image with a new Pixel whose rgb values 
+  are calculated by subtracting the original rgb values from 255. These subtractions 
+  are done individually for each of the red, green, and blue colors.</font></p><p><font color="#000000">These transformations can be performed by modifying the 
+  image array of Pixels directly. You should do these first to get a better idea 
+  of how the image is represented and what happens when you modify the Pixels. 
+  You should make every effort to get this far before the end of week 7. 
+  That will ensure that you�ve made good progress on this assignment, or at least 
+  know what you need to clear up in discussions during lecture.</font></p><p><font color="#000000"><b>Notes:</b></font></p><ul>
+  <li><font color="#000000">You can assume that the image array is rectangular, 
+    i.e., all rows have the same length.</font> 
+  </li><li><font color="#000000">All of these simple transformations are their own 
+    inverse. If you repeat any of these transformations twice in a row, you should 
+    get the original image back.</font> 
+  </li><li><font color="#000000">You should use relatively small image files for testing.&nbsp; 
+    The program will work fine with large images, but there can be a significant 
+    delay while the transformed image is created if the image is large. </font></li></ul><h3><font color="#000000">3x3 Transformations</font></h3><p><font color="#000000">Once you�ve got the simple transformations working, you 
+  should implement this next set, which includes Gaussian blur, Laplacian, Unsharp 
+  Masking, and Edgy. All of these transformations are based on the following idea: 
+  each pixel in the transformed image is calculated from the values of the original 
+  pixel and its immediate neighbors, i.e., the 3x3 array of pixels centered on 
+  the old pixel whose new value we are trying to calculate. The new rgb values 
+  can be obtained by calculating a weighted average; the median, minimum, or maximum; 
+  or something else. As with the negate transformation, the calculations are carried 
+  out independently for each color, i.e., the new red value for a pixel is obtained 
+  from the old red values, and similarly for red and blue.</font></p><p><font color="#000000">The four transformations you should implement all compute 
+  the new pixel values as a weighted average of the old ones. The only difference 
+  between them is the actual weights that are used. You should be able to add 
+  a single method inside class PixelImage to compute a new image using weighted 
+  averages, and call it from the methods for the specific transformations with 
+  appropriate weights as parameters. <b>You should <i>not</i> need to repeat the 
+  code for calculating weighted averages four times, once in each transformation.</b>&nbsp; 
+  The method you add to PixelImage to do the actual calculations can, of course, 
+  call additional new methods if it makes sense to break the calculation into 
+  smaller pieces.</font></p><p><font color="#000000">Here are the weights for the 3x3 transformations you 
+  should implement.</font></p><p><font color="#000000">Gaussian</font></p><p><font color="#000000"><code>1&nbsp; 2&nbsp; 1<br>
+  2&nbsp; 4&nbsp; 2<br>
+  1&nbsp; 2&nbsp; 1</code></font></p><p><font color="#000000">After computing the weighted sum, the result must be 
+  divided by 16 to scale the numbers back down to the range 0 to 255. The effect 
+  is to blur the image.</font></p><p><font color="#000000">Laplacian</font></p><p><font color="#000000"><code>-1&nbsp; -1&nbsp; -1<br>
+  -1&nbsp;&nbsp; 8&nbsp; -1<br>
+  -1&nbsp; -1&nbsp; -1</code></font></p><p><font color="#000000">The neighboring pixel values are subtracted from 8 times 
+  the center one, so no scaling is needed. However, you do need to check that 
+  the weighted average is between 0 and 255.&nbsp; If it is less than 0, replace 
+  the calculated value with 0 (i.e., the new value is the maximum of 0 and the 
+  calculated value).&nbsp; If it is greater than 255, then replace the calculated 
+  value with 255.&nbsp; This transformation detects and highlights edges.</font></p><p><font color="#000000">Unsharp masking</font></p><p><font color="#000000"><code>-1&nbsp; -2&nbsp; -1<br>
+  -2&nbsp; 28&nbsp; -2<br>
+  -1&nbsp; -2&nbsp; -1</code></font></p><p><font color="#000000">This transformation is created by multiplying the center 
+  pixel and subtracting the Gaussian weighted average. The result must be divided 
+  by 16 to scale it back down to the range 0 to 255.&nbsp; As with the Laplacian 
+  transformation, check for negative weighted averages or weighted averages greater 
+  than 255 (and do the same thing as in the Laplacian case to fix it).</font></p><p><font color="#000000">Edgy</font></p><p><font face="Courier New" size="2">-1&nbsp; -1&nbsp; -1<br>
+  -1&nbsp;&nbsp; 9&nbsp; -1<br>
+  -1&nbsp; -1&nbsp; -1</font></p><p><font color="#000000">This adds the Laplacian weighted average to the original 
+  pixel, which sharpens the edges in the image. It does not need scaling, but 
+  you need to watch for weighted averages less than 0 or greater than 255.</font></p><font color="#000000"><b>Notes:</b></font> 
+<ul>
+  <li><font color="#000000">The complication with these transformations is that 
+    the new value of each pixel depends on the neighboring ones, as well as itself. 
+    That means we cannot replace the original pixels with new values before the 
+    old values have been used to compute the new values of their neighbors. The 
+    simplest way to handle this is to create a new 2D Pixel array the same size 
+    as the old image, compute Pixels for the new image and store them in the new 
+    array, then change the image instance variable to refer to the new array once 
+    it is completed.</font> 
+  </li><li><font color="#000000">You should assume the image has at least three rows 
+    and columns and you do not need to worry about updating the first and last 
+    rows and columns. In other words, <b>only update the interior pixels</b> that 
+    have neighbors on all four sides.&nbsp; However, every position in the array 
+    of Pixels must have refer to a Pixel object; you can't just leave a position 
+    in the array uninitialized. </font>
+  </li><li><font color="#000000">Debugging hint: From past experience, we�ve noticed 
+    that bugs in the implementation of these transformations tend to produce more 
+    spectacular visible effects with the Laplacian weights. You might start with 
+    this set of weights when testing your code for the 3x3 transformations.</font> 
+  </li><li><font color="#000000">Be sure that your monitor is set to �thousands� or 
+    �millions� of colors, which is normally the case on most modern PCs. If you 
+    set the monitor to such a high resolution that the color display is set to 
+    256, the colors will be rendered only approximately and it will be hard to 
+    see the effects of most of these transformations.</font> </li></ul><h3><font color="#000000">Further explorations (up to 5 points of extra credit)</font></h3><p><font color="#000000">Once you have the basic assignment working, turn it in 
+  so you�ve got something submitted. Then feel free to experiment with additional 
+  transformations. Besides varying the weights, you can try replacing each pixel 
+  by the minimum or maximum value in the neighborhood, or the median. Try weights 
+  that are not symmetric. Try using a larger neighborhood like 5x5. Or look on 
+  the web or in the library (an actual library not the Java library!) for additional 
+  things you can do with the images. Some small amount of extra credit (up to 
+  5 points) may be awarded for particularly imaginative work.</font></p><p><font color="#000000">Here are some <a href="http://www.seattlecentral.edu/faculty/dfaust/Sp15CSC142/hw5/SnapShopExamples.html">transformation 
+  examples</a> done with billg.jpg</font></p><h3><font color="#000000">Report</font></h3><p><font color="#000000">Write a short report (as a comment) at the beginning 
+  of the SnapShopConfiguration file. Describe:</font></p><ul>
+  <li><font color="#000000">what additional filters (besides the three simple 
+    transformations and the four 3x3 transformations) you wrote and submitted, 
+    if any </font> 
+  </li><li><font color="#000000">what works and what doesn�t</font> 
+  </li><li><font color="#000000">the surprises or problems you encountered while implementing 
+    the transformations.</font> 
+</li></ul><p>(-2 points if you don't provide a report)</p><blockquote>
+  <center>
+    <font size="+1"><b>Your program has to be your own.</b></font> 
+  </center></blockquote><p></p>
+
+
+</x-claris-tagview></x-claris-window></body></html>
